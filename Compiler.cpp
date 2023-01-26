@@ -31,17 +31,28 @@ void includeToBuild() {
     build << "#include <vector>" << std::endl;
 }
 
-void addPrintFunction() {
+void addFunctions() {
     std::ofstream build;
-    std::ifstream printFile;
+    std::ifstream readFile;
 
     build.open("build.cpp", std::ios::app);
-    printFile.open("./functions/print.cpp");
-
-    std::string line;
-    while (std::getline(printFile, line)) {
-        build << line << std::endl;
+    std::vector<std::string> files = {"print", "math"};
+    for (int i = 0; i < files.size(); i++) {
+        readFile.open("functions/" + files[i] + ".cpp");
+        std::string line;
+        while (getline(readFile, line)) {
+            build << line << std::endl;
+        }
+        readFile.close();
     }
+
+
+    // printFile.open("./functions/print.cpp");
+
+    // std::string line;
+    // while (std::getline(printFile, line)) {
+    //     build << line << std::endl;
+    // }
 }
 
 void addMainFunction() {
@@ -120,11 +131,11 @@ int handleAddVar(std::vector<std::string> words, int i) {
         std::string varValue = words[j];
         std::string varType = figureOutType(varValue);
         if (varType == "int" || varType == "float" || varType == "double") {
-            addToMain("double " + varName + "=" + varValue + "; ");
+            addToMain("double " + varName + "=" + varValue );
         } 
     }
 
-    i += (j - i) + 1;
+    i += (j - i);
 
     return i;
 }
@@ -142,7 +153,7 @@ void readFile(std::string path) {
         // Split line into words
         std::string word = "";
         for (char x : line) {
-            if (x == ' ' || x == ';' || x == '{' || x == '}' || x == '(' || x == ')' || x == '\n' || x == '[' || x == ']' || x == ',' || x == '+' || x == '-' || x == '*' || x == '/' || x == '=') {
+            if (x == ' ' || x == ';' || x == '{' || x == '}' ||  x == ')' || x == '\n' || x == '[' || x == ']' || x == ',' || x == '+' || x == '-' || x == '*' || x == '/' || x == '=') {
                 if (word != "") {
                     words.push_back(word);
                     word = "";
@@ -180,7 +191,7 @@ void compile(std::string path) {
 
     includeToBuild();
 
-    addPrintFunction();
+    addFunctions();
     addClasses();
 
     addMainFunction();
