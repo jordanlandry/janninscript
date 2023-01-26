@@ -1,8 +1,19 @@
 
 
 
-var i = [1, 2, 5, 3, 4];
+var pp = [1, 2, 3, 4, 5];
 
-i.sort();
 
-i.print();
+pp.print();
+
+
+print(pp[0]);
+
+
+var count = 0;
+for (var i = 0; i < 100; i++) {
+  for (var j = 0; j < 100; j++) {
+    print(count);
+    count++;
+  }
+}

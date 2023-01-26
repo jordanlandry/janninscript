@@ -1,13 +1,12 @@
 class Vector {
 public:
-    std::vector<int> value;
-
+    std::vector<double> value;
 
     int len() {
         return value.size();
     }
     
-    void push(int x) {
+    void push(double x) {
         value.push_back(x);
     }
 
@@ -29,7 +28,7 @@ public:
 
     // Quick sort
 
-    void quickSort(std::vector<int> &v, int start, int end) {
+    void quickSort(std::vector<double> &v, int start, int end) {
         if (start >= end) return;
 
         int pivot = v[end];
@@ -52,12 +51,12 @@ public:
         quickSort(value, 0, value.size() - 1);
     }
 
-    void reverse() {
-        std::reverse(value.begin(), value.end());
-    }
+    // void reverse() {
+    //     std::reverse(value.begin(), value.end());
+    // }
 
 
-    void removeFirst(int x) {
+    void removeFirst(double x) {
         for (int i = 0; i < value.size(); i++) {
             if (value[i] == x) {
                 value.erase(value.begin() + i);
@@ -66,7 +65,7 @@ public:
         }
     }
 
-    void removeAll(int x) {
+    void removeAll(double x) {
         for (int i = 0; i < value.size(); i++) {
             if (value[i] == x) {
                 value.erase(value.begin() + i);
@@ -75,7 +74,7 @@ public:
         }
     }
 
-    bool includes(int x) {
+    bool includes(double x) {
         for (int i = 0; i < value.size(); i++) {
             if (value[i] == x) return true;
         }

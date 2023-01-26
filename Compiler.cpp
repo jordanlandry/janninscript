@@ -4,11 +4,11 @@
 #include <vector>
 
 #include "helpers/skipSpaces.cpp"
-#include "classes/Vector.cpp"
+#include "helpers/isVectorVar.cpp"
 
 void compile(std::string path);
 
-std::vector<std::string> variableNames;
+std::vector<std::string> vectorVariableNames;
 int main() {
     compile("./build.jannin");
     return 0;
@@ -68,15 +68,23 @@ void addToMain(std::string word) {
 
 void addClasses() {
     std::ofstream build;
-    std::ifstream vectorFile;
-
     build.open("build.cpp", std::ios::app);
-    vectorFile.open("./classes/Vector.cpp");
 
-    std::string line;
-    while (std::getline(vectorFile, line)) {
-        build << line << std::endl;
+    std::vector<std::string> classes = {"Vector"};
+    for (int i = 0; i < classes.size(); i++) {
+        std::ifstream classFile;
+        classFile.open("./classes/" + classes[i] + ".cpp");
+
+        std::string line;
+        while (std::getline(classFile, line)) {
+            build << line << std::endl;
+        }
     }
+}
+
+std::string figureOutType(std::string word) {
+    // Return int for now 
+    return "int";
 }
 
 int handleAddVar(std::vector<std::string> words, int i) {
@@ -86,9 +94,6 @@ int handleAddVar(std::vector<std::string> words, int i) {
     j = skipSpaces(words, j);
     std::string varName = words[j];
 
-    // Add variable name to vector
-    variableNames.push_back(varName);
-
     j = skipSpaces(words, j + 1);
     j = skipCertain(words, j, "=");
     j = skipSpaces(words, j + 1);
@@ -96,22 +101,27 @@ int handleAddVar(std::vector<std::string> words, int i) {
     // Handle arrays as vectors
     if (words[j] == "[") {
         addToMain("Vector " + varName + ";\n");
+
+        vectorVariableNames.push_back(varName);
         
         addToMain("\t" + varName + ".value = {");
         while (words[j] != "]") {
             j = skipSpaces(words, j + 1);
-            if (words[j] != "]") addToMain(words[j]);
+            if (words[j] != "]") {
+                addToMain(words[j]);
+            }
         }
 
         addToMain("};\n\t");
     }
 
+    // Not an array
     else {
         std::string varValue = words[j];
-        std::string varType = "int";
-        addToMain(varType + " " + varName + " = " + varValue + ";\n");
-
-        addToMain("\n");
+        std::string varType = figureOutType(varValue);
+        if (varType == "int" || varType == "float" || varType == "double") {
+            addToMain("double " + varName + "=" + varValue + "; ");
+        } 
     }
 
     i += (j - i) + 1;
@@ -127,11 +137,12 @@ void readFile(std::string path) {
 
     std::string line;
     std::vector<std::string> words;
+
     while (std::getline(file, line)) {
         // Split line into words
         std::string word = "";
         for (char x : line) {
-            if (x == ' ' || x == ';' || x == '{' || x == '}' || x == '(' || x == ')' || x == '\n' || x == '[' || x == ']' || x == ',') {
+            if (x == ' ' || x == ';' || x == '{' || x == '}' || x == '(' || x == ')' || x == '\n' || x == '[' || x == ']' || x == ',' || x == '+' || x == '-' || x == '*' || x == '/' || x == '=') {
                 if (word != "") {
                     words.push_back(word);
                     word = "";
@@ -140,6 +151,12 @@ void readFile(std::string path) {
                 std::string s(1, x);
                 words.push_back(s);
             }
+
+            else if (x == '.') {
+                words.push_back(word);
+                word = "";
+                word += x;
+            }
             
             else word = word + x;
         }
@@ -147,21 +164,13 @@ void readFile(std::string path) {
 
     // Go through words and write to build
     for (int i = 0; i < words.size(); i++) {
-
-        bool isVariable = false;
         std::string word = words[i];
-        for (int j = 0; j < variableNames.size(); j++) {
-            if (word == variableNames[j]) {
-                isVariable = true;
-            }
-        }
+
+        // Add .value because we are using a class
+        bool addDotValue = isVectorVar(vectorVariableNames, word) && words[i + 1][0] != '.';
 
         if (word == "var") i = handleAddVar(words, i);
-        else if (isVariable) addToMain(word + ".value");
-        else if (word == ";") {
-            addToMain(";\n\t");
-        }
-
+        else if (addDotValue) addToMain(word + ".value");
         else addToMain(word);
     }
 }
@@ -170,11 +179,6 @@ void compile(std::string path) {
     clearBuild();
 
     includeToBuild();
-    
-    std::vector<std::string> parameters;
-    parameters.push_back("std::string");
-    parameters.push_back("int");
-    // addPrintFunction(parameters);
 
     addPrintFunction();
     addClasses();
@@ -183,9 +187,4 @@ void compile(std::string path) {
     readFile(path);
     endMainFunction();
 
-    // Turn the file into c++ code
-
 }
-
-
-

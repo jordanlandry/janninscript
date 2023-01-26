@@ -1,10 +1,10 @@
 void print() {
-    return;
+    std::cout << "\n";
 }
 
 
 template<typename First, typename ... Strings>
 void print(First arg, const Strings&... rest) {
-    std::cout << std::boolalpha << arg  << std::endl;
+    std::cout << std::boolalpha << arg  << " ";
     print(rest...);
 }
