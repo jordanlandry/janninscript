@@ -8,6 +8,7 @@
 
 void compile(std::string path);
 
+std::vector<std::string> variableNames;
 int main() {
     compile("./build.jannin");
     return 0;
@@ -85,6 +86,9 @@ int handleAddVar(std::vector<std::string> words, int i) {
     j = skipSpaces(words, j);
     std::string varName = words[j];
 
+    // Add variable name to vector
+    variableNames.push_back(varName);
+
     j = skipSpaces(words, j + 1);
     j = skipCertain(words, j, "=");
     j = skipSpaces(words, j + 1);
@@ -115,10 +119,8 @@ int handleAddVar(std::vector<std::string> words, int i) {
     return i;
 }
 
-
 // Read file line by line and write to build
 void readFile(std::string path) {
-    std::vector<std::string> variableNames;
 
     std::ifstream file;
     file.open(path);
@@ -138,10 +140,6 @@ void readFile(std::string path) {
                 std::string s(1, x);
                 words.push_back(s);
             }
-            else if (x == '.') {
-                words.push_back(word);
-                word = ".";
-            }
             
             else word = word + x;
         }
@@ -149,9 +147,17 @@ void readFile(std::string path) {
 
     // Go through words and write to build
     for (int i = 0; i < words.size(); i++) {
+
+        bool isVariable = false;
         std::string word = words[i];
+        for (int j = 0; j < variableNames.size(); j++) {
+            if (word == variableNames[j]) {
+                isVariable = true;
+            }
+        }
 
         if (word == "var") i = handleAddVar(words, i);
+        else if (isVariable) addToMain(word + ".value");
         else if (word == ";") {
             addToMain(";\n\t");
         }

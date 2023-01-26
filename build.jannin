@@ -4,4 +4,7 @@
 
 var j = [10, 11, 12];
 
-print(j.len());
+print(j.includes(10));
+
+print(1);
+print(j[0]);

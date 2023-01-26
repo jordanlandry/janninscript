@@ -5,6 +5,6 @@ void print() {
 
 template<typename First, typename ... Strings>
 void print(First arg, const Strings&... rest) {
-    std::cout << arg  << std::endl;
+    std::cout << std::boolalpha << arg  << std::endl;
     print(rest...);
 }
