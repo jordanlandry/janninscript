@@ -45,14 +45,6 @@ void addFunctions() {
         }
         readFile.close();
     }
-
-
-    // printFile.open("./functions/print.cpp");
-
-    // std::string line;
-    // while (std::getline(printFile, line)) {
-    //     build << line << std::endl;
-    // }
 }
 
 void addMainFunction() {
@@ -81,7 +73,7 @@ void addClasses() {
     std::ofstream build;
     build.open("build.cpp", std::ios::app);
 
-    std::vector<std::string> classes = {"Vector"};
+    std::vector<std::string> classes = {"VectorBool", "VectorString", "VectorDouble"};
     for (int i = 0; i < classes.size(); i++) {
         std::ifstream classFile;
         classFile.open("./classes/" + classes[i] + ".cpp");
@@ -105,13 +97,25 @@ int handleAddVar(std::vector<std::string> words, int i) {
     j = skipSpaces(words, j);
     std::string varName = words[j];
 
+    std::string type = "";
+
     j = skipSpaces(words, j + 1);
+    if (words[j] == ":") {
+        j = skipSpaces(words, j + 1);
+        type = words[j];
+        j = skipSpaces(words, j + 1);
+    }
+
+
     j = skipCertain(words, j, "=");
     j = skipSpaces(words, j + 1);
-
+    
     // Handle arrays as vectors
     if (words[j] == "[") {
-        addToBuild("Vector " + varName + ";\n");
+
+        if (type == "number") addToBuild("VectorDouble " + varName + ";");
+        else if (type == "string") addToBuild("VectorString " + varName + ";");
+        else if (type == "bool") addToBuild("VectorBool " + varName + ";");
 
         vectorVariableNames.push_back(varName);
         
@@ -129,10 +133,7 @@ int handleAddVar(std::vector<std::string> words, int i) {
     // Not an array
     else {
         std::string varValue = words[j];
-        std::string varType = figureOutType(varValue);
-        if (varType == "int" || varType == "float" || varType == "double") {
-            addToBuild("double " + varName + "=" + varValue );
-        } 
+        addToBuild("auto " + varName + "=" + varValue );
     }
 
     i += (j - i);
@@ -167,10 +168,12 @@ int skipToNextFunction(std::vector<std::string> words, int i) {
         if (words[j] == "fn") return j;
         j++;
     }
+
     return j;
 }
 
 int handleAddFn(std::vector<std::string> words, int i) {
+
 
     addToBuild("auto ");
     i = skipSpaces(words, i + 1);
@@ -185,21 +188,8 @@ int handleAddFn(std::vector<std::string> words, int i) {
     if (words[i] == ")") addToBuild(")");
 
     else {
-        // addToBuild("double " + words[i]);
-        // i = skipSpaces(words, i + 1);
-
-        // addToBuild(",");
-        // i = skipSpaces(words, i + 1);
-
-        // addToBuild("double " + words[i]);
-        // i = skipSpaces(words, i + 1);
-
-        // std::cout << words[i] << std::endl;
-        // addToBuild(")");
-
-
         while (words[i] != ")") {
-            addToBuild("double " + words[i]);
+            addToBuild("auto " + words[i]);
             i = skipSpaces(words, i + 1);
 
             if (words[i] == ")") {
@@ -232,7 +222,7 @@ void readFile(std::string path) {
         // Split line into words
         std::string word = "";
         for (char x : line) {
-            if (x == ' ' || x == ';' || x == '{' || x == '}' || x == '(' ||  x == ')' || x == '\n' || x == '[' || x == ']' || x == ',' || x == '+' || x == '-' || x == '*' || x == '/' || x == '=') {
+            if (x == ' ' || x == ';' || x == '{' || x == '}' || x == '(' ||  x == ')' || x == '\n' || x == '[' || x == ']' || x == ',' || x == '+' || x == '-' || x == '*' || x == '/' || x == '=' || x == ':') {
                 if (word != "") {
                     words.push_back(word);
                     word = "";

@@ -2,18 +2,6 @@
 
 
 
+var n = 10;
+var x:number = [];
 
-
-fn power(num, to) {
-
-  var result = 1;
-  for (var i = 0; i < to; i++) {
-    result *= num;
-  }
-
-
-  return result;
-}
-
-
-print(power(10, 3));
