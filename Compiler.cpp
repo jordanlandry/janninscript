@@ -186,5 +186,4 @@ void compile(std::string path) {
     addMainFunction();
     readFile(path);
     endMainFunction();
-
 }
