@@ -4,4 +4,4 @@
 
 var j = [10, 11, 12];
 
-print(j.size());
+print(j.len());
