@@ -1,10 +1,8 @@
 
 
 
+var i = [1, 2, 5, 3, 4];
 
-var j = [10, 11, 12];
+i.sort();
 
-print(j.includes(10));
-
-print(1);
-print(j[0]);
+i.print();
