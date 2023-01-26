@@ -4,17 +4,16 @@
 
 
 
-var f = floor(100.5);
-print(f);
+fn power(num, to) {
 
-var c = ceil(100.1);
-print(c);
-
-var r = round(100.6);
-print(r);
+  var result = 1;
+  for (var i = 0; i < to; i++) {
+    result *= num;
+  }
 
 
+  return result;
+}
 
-var test = 10;
 
-print(test);
+print(power(10, 3));
