@@ -1,62 +1,161 @@
 # JanninScript
 
-JanninScript is a programming language which compiles into C++
+Welcome to JanninScript, a programming language created in C++ that compiles into C++.
+JanninScript is an extremely basic language that allows you to write code that is easily translated into runnable C++ code.
 
-## How it works
+## Included functions and variables
 
-The compiler works by first adding some basic functions to a build.cpp file.
-For example here is a simplified version of the print function
+Functions in JanninScript are written in C++ and added to the top of the build file allowing you to call them.
+
+### Print
 
 ```
-void print(string message) {
-    cout << message << endl;
+// --- C++ Code --- //
+void print() {
+    std::cout << "\n";
+}
+
+template<typename First, typename ... Strings>
+void print(First arg, const Strings&... rest) {
+    std::cout << std::boolalpha << arg  << " ";
+    print(rest...);
 }
 ```
 
-Then when you run the `print("Hello, World")` function, it runs the previously defined function.
+If you are unfamiliar with C++, the print function may look confusing.
+This function allows you to have unlimited parameters of any type, making it so you can run the following code
 
-The compiler reads through your .jannin file and searches for keywords, such as `var`, to then translate that into C++
+`print("Hello!", "I am Jordan.", "My birthday is on February", 6);`
+The above code contains multiple parameters, with both strings and a number, not usually possible in a traditional C++ function.
 
-JanninScript
-`var i = 10;`
-C++
-`double i = 10;`
+### Math functions
 
-With just adding this variable system, we can already create tons of functionality. Since it copies everything you type, C++ code is valid in JanninScript. This means that for loops are implemented just replacing int, with var
+| Function Name | Description                                           | Params                     | Return |
+| ------------- | ----------------------------------------------------- | -------------------------- | ------ |
+| floor         | Rounds decimal number down                            | x: Number                  | Number |
+| ceil          | Rounds decimal number up                              | x: Number                  | Number |
+| round         | Rounds decimal number                                 | x: Number                  | Number |
+| round         | Rounds decimal number to specified number of decimals | x: Number, decimal: Number | Number |
+| abs           | Returns the absolute value                            | x: Number                  | Number |
+| square        | Returns the squared value                             | x: Number                  | Number |
+| pow           | Returns x^y                                           | x: Number, y: Number       | Number |
+| log           | Return log(x)                                         | x:Number                   | Number |
+
+### Math values
+
+| Name | Value                  |
+| ---- | ---------------------- |
+| PI   | 3.14159265358979323846 |
+| E    | 2.71828182845904523536 |
+
+## Syntax
+
+_note semicolons are mandatory in JanninScript_
+
+### Variables
+
+In JanninScript to create a variable, use the var keyword.
+
+JanninScript: `var myVariable = 10;`
+C++ Translation: `auto myVariable = 10;`
+
+In JanninScript, you do not need to add a type to a normal variable.
+
+### Arrays
+
+Arrays in JanninScript use a custom Vector Class and are typed.
+To make an array in JanninScript, simply set the value of a var using `[ ]` syntax, note it must be typed using `:arrayType` after the variable name.
+
+#### JanninScript:
+
+```
+var array1:number = [1, 2, 3];
+
+var array2:number = [];
+array2.push(1);
+array2.push(2);
+array2.push(3);
+```
+
+#### C++ Translation
+
+```
+VectorDouble array1;
+array1.value = {1, 2, 3};
+
+VectorDouble array2;
+array2.push_back(1);
+array2.push_back(2);
+array2.push_back(3);
+```
+
+Since arrays are custom classes, they come with many useful functions such as `push`, `print`, `removeIndex`, and more.
+
+See the Vector files in the classes folder for a full list of all the methods included in each class.
+
+### Loops
+
+Since C++ code is valid code in JanninScript, loops are written with the same syntax as C++, but you can switch `int` to `var` in for loops
+
+#### JanninScript for loop
 
 ```
 for (var i = 0; i < 10; i++) {
-    print(i);
+  print(i);
 }
 ```
 
-## Arrays
-
-Technically there are no arrays in JanninScript, instead a custom class called Vector. This vector class contains methods such as push, sort, remove, and more. The way it works is when the compiler sees you are initializing a variable, it checks for the array syntax: `[]`
-If you have values in there for example
+#### Translated in C++
 
 ```
-var numbers = [1, 2, 3, 4, 5];
+for (int i = 0; i < 10; i++) {
+  std::cout << i << std::endl;
+}
 ```
 
-It will add this to the compiler
+#### JanninScript while loop
 
 ```
-Vector numbers;
-numbers.value = {1, 2, 3, 4, 5};
+var j = 0;
+while (j < 10) {
+  print(j);
+  j++;
+}
 ```
 
-Everytime you access this variable, the compiler automatically adds `.value`
-
-## Code Examples
+#### Translated in C++
 
 ```
-var i = 10;
-print(i);
+auto j = 0;
+while (j < 10) {
+    std::cout << j << std::endl;
+    j++;
+}
 ```
 
-```
-var myNumbers = [9, 2, 4, 5, 6, 1 ,7, 8, 1, 23, 5, 15,6, 7, 8];
-myNumbers.sort();
-myNumbers.print();
-```
+Note the compiler will actually use print, a function included in the build file, instead of cout.
+
+## Getting Started
+
+### Download
+
+Before coding in JanninScript, please ensure you have the following:
+
+- Text editor / IDE
+- C++ compiler
+- Git
+
+1. Open the desired download directory
+2. Paste the following command in your terminal `git clone https://github.com/jordanlandry/janninscript.git` -Alternatively, you can download and unzip the project by clicking Code, then Download ZIP.
+
+3. Open the folder in your IDE of choice
+4. Write your JanninScript code in build.jannin
+
+### Compile
+
+1. Compile and run Compiler.cpp. - This will create build.cpp with your compiled JanninScript code
+2. Compile and run build.cpp - This will run your JanninScript code.
+
+### Alternative
+
+_Note_ I will be making an online compiler soon with text highlighting, so you don't have to download the code.

@@ -2,7 +2,6 @@ class VectorDouble {
 public:
     std::vector<double> value;
 
-
     void clear() {
         value.clear();
     }

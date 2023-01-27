@@ -1,11 +1,6 @@
-
-
-
-
 // Values
 const double PI = 3.14159265358979323846;
 const double E = 2.71828182845904523536;
-
 
 // Rounding
 int floor(double x) {
@@ -33,7 +28,7 @@ double abs(double x) {
     return x < 0 ? -x : x;
 }
 
-double sqrt(double x) {
+double square(double x) {
     return x * x;
 }
 
