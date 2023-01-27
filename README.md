@@ -3,6 +3,11 @@
 Welcome to JanninScript, a programming language created in C++ that compiles into C++.
 JanninScript is an extremely basic language that allows you to write code that is easily translated into runnable C++ code.
 
+### How I got the name
+
+Years ago, when I was coming up with my GamerTag name, I experimented with modifying certain words, to see if I could come up with something cool. I eventually used the word "Ninja", and took the first syllable "nin", and put it after the second syllable "ja", to create Janin, and I added another n to have the spelling feel more correct, so we get Jannin.
+I took this name and combined it with my go to programming language, JavaScript, to get JanninScript.
+
 ## Included functions and variables
 
 Functions in JanninScript are written in C++ and added to the top of the build file allowing you to call them.
@@ -22,9 +27,10 @@ void print(First arg, const Strings&... rest) {
 ```
 
 If you are unfamiliar with C++, the print function may look confusing.
-This function allows you to have unlimited parameters of any type, making it so you can run the following code
+This function essentially just allows you to have unlimited parameters of any type, making it so you can run the following code
 
 `print("Hello!", "I am Jordan.", "My birthday is on February", 6);`
+
 The above code contains multiple parameters, with both strings and a number, not usually possible in a traditional C++ function.
 
 ### Math functions
