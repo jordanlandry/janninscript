@@ -10,7 +10,6 @@ Functions in JanninScript are written in C++ and added to the top of the build f
 ### Print
 
 ```
-// --- C++ Code --- //
 void print() {
     std::cout << "\n";
 }
