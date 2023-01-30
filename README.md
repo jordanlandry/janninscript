@@ -142,6 +142,8 @@ Note the compiler will actually use print, a function included in the build file
 
 ## Getting Started
 
+Try out my [Online Compiler](https://jordanlandry.github.io/janninscript-online/) to run JanninScript in the browswer!
+
 ### Download
 
 Before coding in JanninScript, please ensure you have the following:
@@ -162,5 +164,3 @@ Before coding in JanninScript, please ensure you have the following:
 2. Compile and run build.cpp - This will run your JanninScript code.
 
 ### Alternative
-
-_Note_ I will be making an online compiler soon with text highlighting, so you don't have to download the code.
